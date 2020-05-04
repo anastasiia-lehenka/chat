@@ -1,0 +1,32 @@
+.new-message-form {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.message-field {
+  padding: 5px 10px;
+  flex-basis: 300px;
+  flex-grow: 1;
+  resize: none;
+  outline: 0;
+  border-radius: 8px;
+  overflow: hidden
+}
+
+.send-button {
+  flex-basis: 50px;
+  outline: 0;
+  border: none;
+  background: none;
+  color: #8f9095;
+
+  span {
+    font-size: 20px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    color: #317ad0;
+  }
+}
