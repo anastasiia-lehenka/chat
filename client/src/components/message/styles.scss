@@ -1,22 +1,38 @@
 .message-container {
-    max-width: 200px;
+    max-width: 70%;
     display: flex;
-    justify-content: space-between;
 }
 
-.message-text {
-    flex-shrink: 1;
-    display: inline-block;
+.message {
     padding: 10px;
-    margin: 0 5px 5px 0;
+    margin-bottom: 5px;
     box-sizing: border-box;
     background-color: #b5f3e1;
     border-radius: 8px;
 }
 
+.system-message {
+    text-align: center;
+    color: #8f9095;
+    padding: 5px 0;
+}
+
+.message-container--from-current-user {
+    align-self: flex-end;
+    .message {
+        background-color: #b6d6f5;
+    }
+}
+
+.message__username {
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
 .user-image {
+    flex-shrink: 0;
     border-radius: 50%;
     width: 30px;
     height: 30px;
-    align-self: baseline;
+    margin-right: 8px;
 }

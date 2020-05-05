@@ -10,6 +10,8 @@ export default function MessageList(props) {
                 <Message
                     key={item._id}
                     text={item.text}
+                    author={item.author}
+                    currentUser={props.currentUser}
                 />
             )}
         </div>
