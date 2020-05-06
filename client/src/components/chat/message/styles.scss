@@ -1,24 +1,26 @@
 .message-container {
-    max-width: 70%;
     display: flex;
 }
 
 .message {
+    max-width: 70%;
     padding: 10px;
     margin-bottom: 5px;
     box-sizing: border-box;
     background-color: #b5f3e1;
     border-radius: 8px;
+    overflow: hidden;
 }
 
 .system-message {
     text-align: center;
-    color: #8f9095;
-    padding: 5px 0;
+    color: $message-text-color;
+    padding: 5px 0 10px;
 }
 
 .message-container--from-current-user {
-    align-self: flex-end;
+    justify-content: flex-end;
+
     .message {
         background-color: #b6d6f5;
     }

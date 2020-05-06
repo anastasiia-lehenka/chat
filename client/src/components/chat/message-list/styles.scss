@@ -1,0 +1,18 @@
+.message-list {
+    position: absolute;
+    bottom: 0;
+    overflow: auto;
+    width: 100%;
+    padding: 10px 20px;
+    box-sizing: border-box;
+}
+
+.message-list-container {
+    position: relative;
+    height: 90vh;
+    background: white;
+}
+
+.typing-message {
+    color: $message-text-color;
+}

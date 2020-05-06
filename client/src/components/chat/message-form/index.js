@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import './styles.scss';
 
 export default class MessageForm extends Component {
 
@@ -16,12 +15,15 @@ export default class MessageForm extends Component {
         const { sendMessage } = this.props;
         const { messageText } = this.state;
         e.preventDefault();
-        sendMessage(messageText);
-        this.setState(this.initialState);
+        if (messageText) {
+            sendMessage(messageText);
+            this.setState(this.initialState);
+        }
     };
 
     onMessageChange = e => {
         this.setState({ messageText: e.target.value });
+        this.props.socket.emit('typing', this.props.currentUser)
     }
 
     render() {
@@ -29,9 +31,10 @@ export default class MessageForm extends Component {
 
         return (
             <form className="new-message-form" onSubmit={this.submitForm}>
-                <textarea
+                <input
                     className="message-field"
                     value={messageText}
+                    type="text"
                     onChange={ this.onMessageChange }
                     placeholder="Type your message here..."
                     maxLength="200"

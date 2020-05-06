@@ -2,16 +2,25 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  background-color: #f1f1f1;
 }
 
 .message-field {
-  padding: 5px 10px;
+  padding: 10px 20px;
   flex-basis: 300px;
   flex-grow: 1;
   resize: none;
   outline: 0;
-  border-radius: 8px;
-  overflow: hidden
+  background-color: transparent;
+  overflow: hidden;
+  border: none;
+  color: #525151;
+  min-height: 40px;
+  font-size: 16px;
+
+  &::placeholder {
+    color: #525151;
+  }
 }
 
 .send-button {
@@ -19,7 +28,7 @@
   outline: 0;
   border: none;
   background: none;
-  color: #8f9095;
+  color: #525151;
 
   span {
     font-size: 20px;
