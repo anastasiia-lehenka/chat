@@ -16,7 +16,7 @@ export default function Message(props) {
         (isSystemMessage ? <p className="system-message">{ text }</p> :
         <div className={classes}>
             {isFromCurrentUser ||
-            <img className="user-image" src={img || 'user-profile-image.png'} alt="user avatar"/>
+            <img className="user-image" src={img || '/user-profile-image.png'} alt="user avatar"/>
             }
             <div className="message">
                 {isFromCurrentUser ||

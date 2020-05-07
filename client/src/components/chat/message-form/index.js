@@ -30,7 +30,7 @@ export default class MessageForm extends Component {
         const { messageText } = this.state;
 
         return (
-            <form className="new-message-form" onSubmit={this.submitForm}>
+            <form className="message-form" onSubmit={this.submitForm}>
                 <input
                     className="message-field"
                     value={messageText}
@@ -40,7 +40,7 @@ export default class MessageForm extends Component {
                     maxLength="200"
                 />
                 <button className="send-button" type="submit">
-                    <span className="fa fa-paper-plane"></span>
+                    <span className="fa fa-paper-plane"/>
                 </button>
             </form>
         );

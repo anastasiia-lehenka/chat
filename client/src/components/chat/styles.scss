@@ -1,0 +1,13 @@
+.chat-container {
+  flex: 1 1 auto;
+  background-color: #e5e9ee;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  max-width: 650px;
+  margin: 0 auto;
+  height: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}

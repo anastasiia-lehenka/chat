@@ -5,6 +5,7 @@ const socket = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socket(server);
+const {addUser, removeUser, getUser, geAllUsers} = require('./users.js');
 let id = 3;
 
 const PORT = process.env.PORT || 5000;
@@ -12,6 +13,9 @@ server.listen(PORT, () => { console.log(`App has been started on port ${PORT}...
 
 io.on('connection', (socket) => {
     socket.on('join', username => {
+        const { error, user } = addUser(socket.id, username);
+        if (error) return error;
+
         socket.emit('message', {
             _id: id++,
             author: 'ADMIN',
@@ -26,8 +30,10 @@ io.on('connection', (socket) => {
 
     });
 
-    socket.on('message', ({author, text}) => {
-        io.sockets.emit('message', {_id: id++, author, text});
+    socket.on('message', (text) => {
+        const user = getUser(socket.id);
+
+        io.sockets.emit('message', {_id: id++, author: user.username, text});
     });
 
     socket.on('typing', username => {

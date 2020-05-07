@@ -1,14 +1,14 @@
 import MessageList from './message-list';
 import NewMessageForm from './message-form';
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import io from 'socket.io-client';
-import { ENDPOINT } from '../../constants';
+import {SOCKET_ENDPOINT} from '../../constants';
+import queryString from 'query-string';
 
 export default class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentUser: 'User1',
             messages: [
                 {
                     _id: 1,
@@ -23,8 +23,9 @@ export default class Chat extends Component {
             ],
             typingMessage: ''
         };
-        this.socket = io.connect(ENDPOINT);
-        this.socket.emit('join', this.state.currentUser);
+        this.currentUser = queryString.parse(this.props.location.search).username;
+        this.socket = io.connect(SOCKET_ENDPOINT);
+        this.socket.emit('join', this.currentUser);
     }
 
     componentDidMount() {
@@ -42,29 +43,30 @@ export default class Chat extends Component {
     }
 
     sendMessage = message => {
-        this.socket.emit('message', {author: this.state.currentUser, text: message});
+        this.socket.emit('message', message);
     };
 
     render() {
         const {
             messages,
-            currentUser,
             typingMessage
         } = this.state;
 
         return (
-            <Fragment>
-                <MessageList
-                    messageList={messages}
-                    currentUser={currentUser}
-                    typingMessage={typingMessage}
-                />
-                <NewMessageForm
-                    sendMessage={this.sendMessage}
-                    socket={this.socket}
-                    currentUser={currentUser}
-                />
-            </Fragment>
+            <section className="chat-container">
+                <div className="chat">
+                    <MessageList
+                        messageList={messages}
+                        currentUser={this.currentUser}
+                        typingMessage={typingMessage}
+                    />
+                    <NewMessageForm
+                        sendMessage={this.sendMessage}
+                        socket={this.socket}
+                        currentUser={this.currentUser}
+                    />
+                </div>
+            </section>
         );
     }
 };

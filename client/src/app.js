@@ -11,8 +11,8 @@ export default class App extends Component {
         return (
             <Router>
                 <Header />
-                <Redirect to="/login" from="/"/>
-                <Route path="/login" component={ Login }/>
+                {/*<Redirect to="/login" from="/"/>*/}
+                <Route path="/" exact component={ Login }/>
                 <Route path="/chat" component={ Chat }/>
             </Router>
         );
