@@ -1,11 +1,16 @@
 let users = [];
 
 const addUser = (id, username) => {
-  const isExistingUser = users.find( user => user.name === username);
+  const isExistingUser = users.find(user => user.username === username);
 
-  if (isExistingUser) {
-      return new Error ('Username is taken');
-  }
+  // if (isExistingUser) {
+  //     return new Error ('Username is taken');
+  // }
+    
+    if (isExistingUser) {
+    return;
+    }
+
   const user = {
       _id: id,
       username

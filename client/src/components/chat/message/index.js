@@ -9,7 +9,7 @@ export default function Message(props) {
     } = props;
 
     const isFromCurrentUser = author === currentUser;
-    const isSystemMessage = author === 'ADMIN';
+    const isSystemMessage = author === 'SYSTEM';
     const classes = isFromCurrentUser ? "message-container message-container--from-current-user" : "message-container";
 
     return (
