@@ -30,7 +30,7 @@ export default class MessageList extends Component {
         return (
             <div className="message-list-container">
                 <div className="message-list">
-                    {messageList.map(item =>
+                    { messageList.map(item =>
                         <Message
                             key={item._id}
                             text={item.text}

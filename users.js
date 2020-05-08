@@ -1,23 +1,30 @@
 let users = [];
 
-const addUser = (id, username) => {
-  const isExistingUser = users.find(user => user.username === username);
+const addUser = (id, username, password) => {
+    const isExistingUser = users.find(user => user.username === username);
 
-  // if (isExistingUser) {
-  //     return new Error ('Username is taken');
-  // }
-    
-    if (isExistingUser) {
-    return;
-    }
+    // if (isExistingUser) {
+    //     return new Error ('Username is taken');
+    // }
 
-  const user = {
-      _id: id,
-      username
-  };
+    if (isExistingUser) return;
 
-  users.push(user);
-  return user;
+    const user = {
+        _id: id,
+        username,
+        isAdmin: false,
+        isOnline: true,
+        image: null,
+        password
+    };
+
+    users.push(user);
+    return user;
+}
+
+const disableUser = id => {
+    users = users.map(user => user._id !== id && (user.isOnline = false));
+    return users;
 }
 
 const removeUser = id => {
@@ -27,6 +34,6 @@ const removeUser = id => {
 
 const getUser = id => users.find(user => user._id === id);
 
-const geAllUsers = () => users;
+const getAllUsers = () => users;
 
-module.exports = {addUser, removeUser, getUser, geAllUsers};
+module.exports = { addUser, removeUser, getUser, getAllUsers, disableUser};

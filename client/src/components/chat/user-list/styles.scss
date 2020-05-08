@@ -1,0 +1,32 @@
+.user-list {
+  background-color: #ffffff;
+  min-width: 270px;
+  border-right: 1px solid $border-color;
+  //box-shadow: 0 0px 8px 0 rgba(0,0,0,0.2) inset;
+  z-index: 1;
+}
+
+.current-user-section,
+.all-users-section {
+  padding: 20px 20px 10px;
+}
+
+.current-user-section {
+  border-bottom: 1px solid $border-color;
+  background-color: #f1f1f1;
+}
+
+.user-list__text {
+  color: $message-text-color;
+  margin-bottom: 20px;
+}
+
+.user-list__text--chat-members {
+  margin-bottom: 25px;
+}
+
+.logout {
+  color: $warning-color;
+  text-decoration: underline;
+  cursor: pointer;
+}

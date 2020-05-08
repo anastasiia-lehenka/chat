@@ -23,7 +23,7 @@ export default class MessageForm extends Component {
 
     onMessageChange = e => {
         this.setState({ messageText: e.target.value });
-        this.props.socket.emit('typing', this.props.currentUser)
+        this.props.showTypingMessage();
     }
 
     render() {

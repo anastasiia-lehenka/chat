@@ -1,54 +1,63 @@
 const io = require('./server').io;
 
-const {addUser, removeUser, getUser, geAllUsers} = require('./users.js');
-
-let id = 3;
+const { addUser, removeUser, getUser, getAllUsers, disableUser } = require('./users');
+const { addMessage, getAllMessages } = require('./messages');
 
 const socketManager = socket => {
-    socket.on('join', username => {
-        const user = addUser(socket.id, username);
-        if (!user) return;
+    // console.log('new connection');
+    // const token = socket.handshake.query.token;
 
-        socket.emit('message', {
-            _id: id++,
-            author: 'SYSTEM',
-            text: `You joined the chat`
-        });
+    // if (!token) {
+    //     socket.disconnect();
+    // }
 
-        socket.broadcast.emit('message', {
-            _id: id++,
-            author: 'SYSTEM',
-            text: `${username} has joined the chat`
-        });
+    socket.on('join', (username, password) => {
+        const newUser = addUser(socket.id, username, password);
+        if (!newUser) return;
 
+        const allUsers = getAllUsers();
+        const allMessages = getAllMessages();
+
+        socket.emit('users', allUsers);
+        socket.emit('messages', allMessages);
+        socket.broadcast.emit('newUser', newUser);
+
+        socket.emit('newMessage', addMessage ('SYSTEM', 'You joined the chat'));
+        socket.broadcast.emit('newMessage', addMessage ('SYSTEM', `${username} has joined the chat`));
     });
 
-    socket.on('message', (text) => {
-        const user = getUser(socket.id);
+    socket.on('newMessage', text => {
+        const currentUser = getUser(socket.id);
+        const newMessage = addMessage(currentUser.username, text);
+        console.log('here');
 
-        io.sockets.emit('message', {
-            _id: id++,
-            author: user.username,
-            text
+        io.sockets.emit('newMessage', newMessage);
+    });
+
+    socket.on('typingMessage', () => {
+        const currentUser = getUser(socket.id);
+        socket.broadcast.emit('typingMessage', {
+            text: `${currentUser.username} is typing a message...`
         });
     });
 
-    socket.on('typing', username => {
-        socket.broadcast.emit('typing-message', {
-            text: `${username} is typing a message...`
-        });
+    socket.on('logout', () => {
+        const currentUser = getUser(socket.id);
+        if (currentUser) {
+            const message = addMessage('SYSTEM', `${currentUser.username} has left the chat`);
+            socket.broadcast.emit('newMessage', message);
+        }
+        removeUser(socket.id);
     });
 
     socket.on('disconnect', () => {
-        const user = getUser(socket.id);
-        if (user) {
-            socket.broadcast.emit('message', {
-                _id: id++,
-                author: 'SYSTEM',
-                text: `${user.username} has left the chat`
-            });
+        const currentUser = getUser(socket.id);
+        if (currentUser) {
+            const message = addMessage('SYSTEM', `${currentUser.username} has left the chat`);
+            socket.broadcast.emit('newMessage', message);
         }
         removeUser(socket.id);
+        // disableUser(socket.id);
     });
 };
 

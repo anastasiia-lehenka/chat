@@ -8,7 +8,7 @@ export default function Message(props) {
         currentUser
     } = props;
 
-    const isFromCurrentUser = author === currentUser;
+    const isFromCurrentUser = author === currentUser.username;
     const isSystemMessage = author === 'SYSTEM';
     const classes = isFromCurrentUser ? "message-container message-container--from-current-user" : "message-container";
 

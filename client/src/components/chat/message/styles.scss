@@ -4,9 +4,9 @@
 
 .message {
     max-width: 70%;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 5px;
-    background-color: #b5f3e1;
+    background-color: #c8f6ed;
     border-radius: 8px;
     overflow: hidden;
 }
@@ -14,7 +14,7 @@
 .system-message {
     text-align: center;
     color: $message-text-color;
-    padding: 5px 0 10px;
+    padding: 10px 0 15px;
 }
 
 .message-container--from-current-user {
@@ -27,7 +27,7 @@
 
 .message__username {
     font-weight: bold;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
 }
 
 .user-image {

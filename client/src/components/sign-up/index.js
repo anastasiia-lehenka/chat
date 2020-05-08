@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Link, Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import Header from '../header';
 
 export default class Login extends Component {
@@ -25,9 +25,7 @@ export default class Login extends Component {
         const regexp = /^[a-zA-Z0-9]{3,}$/;
 
         if (!username.match(regexp) || !password.match(regexp)) {
-            this.setState({
-                incorrectInputMessage: 'Username and password can contain only letters and numbers and must be at least 3 characters long'
-            });
+            this.setState({ incorrectInputMessage: 'Username and password can contain only letters and numbers and must be at least 3 characters long' });
             return;
         }
 
@@ -59,24 +57,21 @@ export default class Login extends Component {
                 : <Fragment>
                     <Header/>
                     <form className="login-form" onSubmit={this.onSubmitForm}>
-                        <h2 className="login-form__title">Sign in</h2>
+                        <h2 className="login-form__title">Sign up</h2>
                         <p className="login-form__text">To join the chat enter your username and password</p>
                         <div className="login-form__inputs">
                             <label className="login-form__input"><span>Username</span>
                                 <input type="text" name="username" onChange={this.onInputChange}/>
                             </label>
-                            <label className="login-form__input"><span>Password</span><
-                                input type="password" name="password" onChange={this.onInputChange}/>
+                            <label className="login-form__input"><span>Password</span>
+                                <input type="password" name="password" onChange={this.onInputChange}/>
                             </label>
                         </div>
                         {incorrectInputMessage &&
                         <p className="login-form__message">{incorrectInputMessage}</p>
                         }
-                        <button className="login-form__button" type="submit">Login</button>
-                        <div className="login-form__signup-label">
-                            <span>New user?</span>
-                            <Link to="/sign-up" className="login-form__link">Sign up</Link>
-                        </div>
+                        <button className="login-form__button login-form__button--signup" type="submit">Start chatting
+                        </button>
                     </form>
                 </Fragment>
         );

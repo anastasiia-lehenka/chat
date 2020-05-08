@@ -12,7 +12,7 @@
 
 .login-form__title {
   font-weight: bold;
-  color: black;
+  color: #4e4e4e;
   margin-bottom: 50px;
 }
 
@@ -37,8 +37,17 @@
     width: 100%;
     display: block;
     padding: 0 5px 5px 0;
-    border-bottom: 1px solid $input-border-color;
+    border-bottom: 1px solid $border-color;
     font-size: 16px;
+    -webkit-user-select: none;
+    user-select: none;
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px white inset;
+    }
   }
 
   &:not(:last-child) {
@@ -74,6 +83,6 @@
 }
 
 .login-form__message {
-  color: #d43b3b;
+  color: $warning-color;
   margin-bottom: 40px;
 }
