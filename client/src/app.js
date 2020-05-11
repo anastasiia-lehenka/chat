@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 
 import Chat from './components/chat';
 import Login from './components/login';
-import SignUp from './components/sign-up';
 
 export default class App extends Component {
 
@@ -13,7 +12,6 @@ export default class App extends Component {
                 <Switch>
                     <Route path="/login" component={ Login }/>
                     <Route path="/chat" component={ Chat }/>
-                    <Route path="/sign-up" component={ SignUp }/>
                     <Route render={() => <Redirect to="/login" />} />
                 </Switch>
             </Router>

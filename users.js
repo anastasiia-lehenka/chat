@@ -12,10 +12,10 @@ const addUser = (id, username, password) => {
     const user = {
         _id: id,
         username,
+        password,
         isAdmin: false,
         isOnline: true,
-        image: null,
-        password
+        image: ''
     };
 
     users.push(user);

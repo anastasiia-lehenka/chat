@@ -21,7 +21,6 @@ export default class Chat extends Component {
     }
 
     componentDidMount() {
-        debugger
         //this.socket = io.connect('http://localhost:5000?token=asdjhsdfgjhsdgfhsgfgs');
         this.socket = io.connect(SOCKET_ENDPOINT);
         this.socket.emit('join', this.currentUser.username, this.currentUser.password);

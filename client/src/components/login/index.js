@@ -1,13 +1,16 @@
 import React, {Component, Fragment} from 'react';
-import {Link, Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import Header from '../header';
 
 export default class Login extends Component {
     constructor(props) {
         super(props);
         this.initialState = {
-            username: '',
-            password: '',
+            user: {
+                username: '',
+                password: '',
+                image: ' '
+            },
             redirect: null,
             incorrectInputMessage: ''
         };
@@ -18,7 +21,7 @@ export default class Login extends Component {
         const {
             username,
             password
-        } = this.state;
+        } = this.state.user;
 
         e.preventDefault();
 
@@ -31,12 +34,30 @@ export default class Login extends Component {
             return;
         }
 
-        this.setState({redirect: '/chat'});
+        fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(this.state.user)
+        })
+            .then(response => {
+                if (!response.ok) throw response
+                return response.json
+            })
+            .then(() => this.setState({redirect: '/chat'}))
+            .catch(err => {
+                err.text().then( errorMessage => console.log(errorMessage));
+                this.setState({incorrectInputMessage: 'Invalid password'})
+            });
     };
 
     onInputChange = e => {
         this.setState({
-            [e.target.name]: e.target.value,
+            user: {
+                ...this.state.user,
+                [e.target.name]: e.target.value
+            },
             incorrectInputMessage: ''
         });
     };
@@ -47,13 +68,18 @@ export default class Login extends Component {
             incorrectInputMessage
         } = this.state;
 
+        const {
+            username,
+            password
+        } = this.state.user;
+
         return (
             redirect ?
                 <Redirect to={{
                     pathname: redirect,
                     state: {
-                        username: this.state.username,
-                        password: this.state.password
+                        username,
+                        password
                     }
                 }}/>
                 : <Fragment>
@@ -73,10 +99,6 @@ export default class Login extends Component {
                         <p className="login-form__message">{incorrectInputMessage}</p>
                         }
                         <button className="login-form__button" type="submit">Login</button>
-                        <div className="login-form__signup-label">
-                            <span>New user?</span>
-                            <Link to="/sign-up" className="login-form__link">Sign up</Link>
-                        </div>
                     </form>
                 </Fragment>
         );
