@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../model/User');
+const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const validate = require('../validation');
 const jwt = require('jsonwebtoken');
@@ -42,22 +42,23 @@ router.post('/login', async (req, res) => {
         });
 
         try {
-            const savedUser = await newUser.save();
+            const token = jwt.sign({_id: newUser._id}, 'token', { expiresIn: '6h' });
+
+            await newUser.save();
             res.send({
-                id: savedUser._id,
-                username: savedUser.username,
-                image: savedUser.image,
-                isAdmin:  savedUser.isAdmin,
-                isOnline: savedUser.isOnline
+                user: {
+                    id: newUser._id,
+                    username: newUser.username,
+                    image: newUser.image,
+                    isAdmin: newUser.isAdmin,
+                    isOnline: newUser.isOnline
+                },
+                token
             });
         } catch(err) {
             res.status(400).send(err);
         }
     }
-
-    const token = jwt.sign({_id: existingUser._id}, 'token');
-    res.header('auth-token', token);
-
 });
 
 module.exports = router;

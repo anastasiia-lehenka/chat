@@ -17,13 +17,13 @@ export default class Chat extends Component {
             users: [],
             typingMessage: ''
         };
+        this.token = localStorage.getItem('token');
         this.currentUser = this.props.location.state ? this.props.location.state: '';
     }
 
     componentDidMount() {
-        //this.socket = io.connect('http://localhost:5000?token=asdjhsdfgjhsdgfhsgfgs');
-        this.socket = io.connect(SOCKET_ENDPOINT);
-        this.socket.emit('join', this.currentUser.username, this.currentUser.password);
+        this.socket = io.connect(`${SOCKET_ENDPOINT}?token=${this.token}`);
+        this.socket.emit('join');
 
         this.socket.on('messages', messages => {
             this.setState({ messages });
@@ -73,7 +73,7 @@ export default class Chat extends Component {
         } = this.state;
 
         return (
-            !this.currentUser
+            !this.token
                 ? <Redirect to="/login"/>
                 : <section className="chat-container">
                     <div className="chat">

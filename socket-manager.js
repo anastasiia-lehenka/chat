@@ -1,30 +1,31 @@
 const io = require('./server').io;
+const jwt = require('jsonwebtoken');
 
 const { addUser, removeUser, getUser, getAllUsers, disableUser } = require('./users');
 const { addMessage, getAllMessages } = require('./messages');
 
 const socketManager = socket => {
-    // console.log('new connection');
-    // const token = socket.handshake.query.token;
+    const token = socket.handshake.query.token;
+    const decodedToken = token && jwt.verify(token, 'token');
+    if (!decodedToken) {
+        socket.disconnect();
+    }
 
-    // if (!token) {
-    //     socket.disconnect();
-    // }
+    const currentUser = getUser(decodedToken._id);
 
-    socket.on('join', (username, password) => {
-        const newUser = addUser(socket.id, username, password);
-        if (!newUser) return;
+    currentUser.then(user => {
+        socket.on('join', () => {
+            // const allUsers = getAllUsers();
+            // const allMessages = getAllMessages();
+            //
+            // socket.emit('users', allUsers);
+            // socket.emit('messages', allMessages);
+            socket.broadcast.emit('newUser', user.username);
 
-        const allUsers = getAllUsers();
-        const allMessages = getAllMessages();
-
-        socket.emit('users', allUsers);
-        socket.emit('messages', allMessages);
-        socket.broadcast.emit('newUser', newUser);
-
-        socket.emit('newMessage', addMessage ('SYSTEM', 'You joined the chat'));
-        socket.broadcast.emit('newMessage', addMessage ('SYSTEM', `${username} has joined the chat`));
-    });
+            socket.emit('newMessage', addMessage('SYSTEM', 'You joined the chat'));
+            socket.broadcast.emit('newMessage', addMessage('SYSTEM', `${user.username} has joined the chat`));
+        });
+    })
 
     socket.on('newMessage', text => {
         const currentUser = getUser(socket.id);
@@ -51,13 +52,13 @@ const socketManager = socket => {
     });
 
     socket.on('disconnect', () => {
-        const currentUser = getUser(socket.id);
-        if (currentUser) {
-            const message = addMessage('SYSTEM', `${currentUser.username} has left the chat`);
-            socket.broadcast.emit('newMessage', message);
-        }
-        removeUser(socket.id);
-        // disableUser(socket.id);
+        // const currentUser = getUser(socket.id);
+        // if (currentUser) {
+        //     const message = addMessage('SYSTEM', `${currentUser.username} has left the chat`);
+        //     socket.broadcast.emit('newMessage', message);
+        // }
+        // removeUser(socket.id);
+         //disableUser(socket.id);
     });
 };
 

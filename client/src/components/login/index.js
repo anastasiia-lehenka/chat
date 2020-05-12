@@ -43,9 +43,12 @@ export default class Login extends Component {
         })
             .then(response => {
                 if (!response.ok) throw response
-                return response.json
+                return response.json()
             })
-            .then(() => this.setState({redirect: '/chat'}))
+            .then(res => {
+                localStorage.setItem('token', res.token);
+                this.setState({redirect: '/chat'})
+            })
             .catch(err => {
                 err.text().then( errorMessage => console.log(errorMessage));
                 this.setState({incorrectInputMessage: 'Invalid password'})
@@ -75,13 +78,7 @@ export default class Login extends Component {
 
         return (
             redirect ?
-                <Redirect to={{
-                    pathname: redirect,
-                    state: {
-                        username,
-                        password
-                    }
-                }}/>
+                <Redirect to={redirect}/>
                 : <Fragment>
                     <Header/>
                     <form className="login-form" onSubmit={this.onSubmitForm}>
