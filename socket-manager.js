@@ -11,27 +11,33 @@ const socketManager = socket => {
         socket.disconnect();
     }
 
-    const currentUser = getUser(decodedToken._id);
+    getUser(decodedToken._id).then(user => {
+        const {
+            username,
+            image
+        } = user;
 
-    currentUser.then(user => {
         socket.on('join', () => {
             // const allUsers = getAllUsers();
             // const allMessages = getAllMessages();
             //
             // socket.emit('users', allUsers);
             // socket.emit('messages', allMessages);
-            socket.broadcast.emit('newUser', user.username);
+            socket.emit('currentUser', {
+                username,
+                image
+            });
+
+            socket.broadcast.emit('newUser', username);
 
             socket.emit('newMessage', addMessage('SYSTEM', 'You joined the chat'));
-            socket.broadcast.emit('newMessage', addMessage('SYSTEM', `${user.username} has joined the chat`));
+            socket.broadcast.emit('newMessage', addMessage('SYSTEM', `${username} has joined the chat`));
         });
     })
 
     socket.on('newMessage', text => {
         const currentUser = getUser(socket.id);
         const newMessage = addMessage(currentUser.username, text);
-        console.log('here');
-
         io.sockets.emit('newMessage', newMessage);
     });
 

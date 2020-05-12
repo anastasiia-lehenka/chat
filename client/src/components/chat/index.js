@@ -18,7 +18,6 @@ export default class Chat extends Component {
             typingMessage: ''
         };
         this.token = localStorage.getItem('token');
-        this.currentUser = this.props.location.state ? this.props.location.state: '';
     }
 
     componentDidMount() {
@@ -27,6 +26,11 @@ export default class Chat extends Component {
 
         this.socket.on('messages', messages => {
             this.setState({ messages });
+        });
+
+        this.socket.on('currentUser', currentUser => {
+            console.log(currentUser);
+            this.setState({ currentUser });
         });
 
         this.socket.on('users', users => {
@@ -69,7 +73,8 @@ export default class Chat extends Component {
         const {
             messages,
             users,
-            typingMessage
+            typingMessage,
+            currentUser
         } = this.state;
 
         return (
@@ -79,11 +84,14 @@ export default class Chat extends Component {
                     <div className="chat">
                         <Header/>
                         <div className="chat-area">
-                            <UserList currentUser={ this.currentUser } userList={users}/>
+                            <UserList
+                                currentUser={ currentUser }
+                                userList={users}
+                            />
                             <div className="message-area">
                                 <MessageList
                                     messageList={messages}
-                                    currentUser={ this.currentUser }
+                                    currentUser={ currentUser }
                                     typingMessage={ typingMessage }
                                 />
                                 <MessageForm

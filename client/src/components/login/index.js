@@ -42,11 +42,11 @@ export default class Login extends Component {
             body: JSON.stringify(this.state.user)
         })
             .then(response => {
-                if (!response.ok) throw response
+                if (!response.ok) throw response;
                 return response.json()
             })
-            .then(res => {
-                localStorage.setItem('token', res.token);
+            .then(response => {
+                localStorage.setItem('token', response.token);
                 this.setState({redirect: '/chat'})
             })
             .catch(err => {
@@ -70,11 +70,6 @@ export default class Login extends Component {
             redirect,
             incorrectInputMessage
         } = this.state;
-
-        const {
-            username,
-            password
-        } = this.state.user;
 
         return (
             redirect ?

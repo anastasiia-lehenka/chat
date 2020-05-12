@@ -45,16 +45,7 @@ router.post('/login', async (req, res) => {
             const token = jwt.sign({_id: newUser._id}, 'token', { expiresIn: '6h' });
 
             await newUser.save();
-            res.send({
-                user: {
-                    id: newUser._id,
-                    username: newUser.username,
-                    image: newUser.image,
-                    isAdmin: newUser.isAdmin,
-                    isOnline: newUser.isOnline
-                },
-                token
-            });
+            res.send({token});
         } catch(err) {
             res.status(400).send(err);
         }
