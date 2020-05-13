@@ -1,32 +1,70 @@
-.user-list {
+.users {
   background-color: #ffffff;
-  min-width: 270px;
+  min-width: 180px;
+  max-width: 300px;
+  flex: 1 2 auto;
   border-right: 1px solid $border-color;
   //box-shadow: 0 0px 8px 0 rgba(0,0,0,0.2) inset;
   z-index: 1;
+  display: none;
+
+  @media screen and (min-width: 640px) {
+    display: block;
+  }
 }
 
-.current-user-section,
+.current-user,
 .all-users-section {
-  padding: 20px 20px 10px;
+  padding: 20px;
 }
 
-.current-user-section {
+.current-user {
   border-bottom: 1px solid $border-color;
   background-color: #f1f1f1;
 }
 
-.user-list__text {
+.users__text {
   color: $message-text-color;
   margin-bottom: 20px;
 }
 
-.user-list__text--chat-members {
+.users__text--chat-members {
   margin-bottom: 25px;
 }
 
-.logout {
-  color: $warning-color;
+.current-user__data {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.current-user__action--leave {
   text-decoration: underline;
   cursor: pointer;
+  color: $warning-color;
+
+  &:not(:last-child) {
+    margin-bottom: 5px;
+  }
+
+  &:hover {
+    color: $dark-text-color;
+  }
+}
+
+.current-user__action--logout {
+  color: $message-text-color;
+  cursor: pointer;
+
+  span {
+    font-size: 22px;
+  }
+
+  &:hover {
+    color: $icon-hover-color;
+  }
+}
+
+.user-list {
+  overflow: auto;
 }

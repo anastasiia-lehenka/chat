@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import { SOCKET_ENDPOINT } from '../../constants';
+import {
+    SOCKET_ENDPOINT,
+    TOKEN_KEY
+} from '../../constants';
 import { Redirect } from 'react-router-dom';
 
 import MessageList from './message-list';
@@ -12,32 +15,42 @@ export default class Chat extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
+        this.initialState = {
             messages: [],
             users: [],
-            typingMessage: ''
+            typingMessage: '',
+            currentUser: {},
+            redirect: null
         };
-        this.token = localStorage.getItem('token');
+        this.state = this.initialState;
+        this.token = localStorage.getItem(TOKEN_KEY);
+        this.socket = this.configureSocket(SOCKET_ENDPOINT, this.token);
     }
 
     componentDidMount() {
-        this.socket = io.connect(`${SOCKET_ENDPOINT}?token=${this.token}`);
         this.socket.emit('join');
+    }
 
-        this.socket.on('messages', messages => {
+    componentWillUnmount() {
+        this.socket.emit('disconnect');
+    }
+
+    configureSocket (endpoint, token) {
+        const socket = io.connect(`${endpoint}?token=${token}`);
+
+        socket.on('messages', messages => {
             this.setState({ messages });
         });
 
-        this.socket.on('currentUser', currentUser => {
-            console.log(currentUser);
+        socket.on('currentUser', currentUser => {
             this.setState({ currentUser });
         });
 
-        this.socket.on('users', users => {
+        socket.on('users', users => {
             this.setState({ users });
         });
 
-        this.socket.on('newMessage', message => {
+        socket.on('newMessage', message => {
             clearTimeout(this.typingTimeout);
             this.setState({
                 typingMessage: '',
@@ -45,20 +58,26 @@ export default class Chat extends Component {
             });
         });
 
-        this.socket.on('newUser', user => {
+        socket.on('newUser', user => {
             this.setState({
                 users: [...this.state.users, user]
             });
         });
 
-        this.socket.on('typingMessage', message => {
+        socket.on('disconnect', user => {
+            this.setState({redirect: '/login'});
+        });
+
+        socket.on('typingMessage', username => {
             if (!this.state.typingMessage) {
-                this.setState({typingMessage: message.text});
+                this.setState({typingMessage: `${username} is typing a message...`});
                 this.typingTimeout = setTimeout(() => {
                     this.setState({typingMessage: ''});
                 }, 2000);
             }
         });
+
+        return socket;
     }
 
     sendMessage = text => {
@@ -69,28 +88,44 @@ export default class Chat extends Component {
         this.socket.emit('typingMessage');
     };
 
+    logOut = () => {
+        localStorage.clear();
+        this.setState({redirect: '/login'});
+    }
+
+    exitChat = () => {
+        localStorage.clear();
+        this.socket.emit('exit');
+        this.setState({redirect: '/login'});
+    }
+
     render() {
         const {
             messages,
             users,
             typingMessage,
-            currentUser
+            currentUser,
+            redirect
         } = this.state;
 
+        const userList = users.filter(user => user.username !== currentUser.username);
+
         return (
-            !this.token
-                ? <Redirect to="/login"/>
+            redirect ?
+                <Redirect to={redirect}/>
                 : <section className="chat-container">
                     <div className="chat">
                         <Header/>
                         <div className="chat-area">
                             <UserList
                                 currentUser={ currentUser }
-                                userList={users}
+                                userList={ userList }
+                                logOut = { this.logOut }
+                                exitChat = { this.exitChat }
                             />
                             <div className="message-area">
                                 <MessageList
-                                    messageList={messages}
+                                    messageList={ messages }
                                     currentUser={ currentUser }
                                     typingMessage={ typingMessage }
                                 />

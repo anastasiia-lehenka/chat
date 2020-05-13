@@ -4,15 +4,19 @@ const { Schema, model } = mongoose;
 
 const messageSchema = new Schema({
     author: {
-        type: String
+        type: String,
+        required: true,
+        min: 3
     },
     text: {
         type: String,
-        required: true
+        required: true,
+        min: 1
     },
     date: {
-        tyoe: Date,
-        default: Date.now
+        type: Date,
+        default: Date.now,
+        required: true
     }
 },  { versionKey: false });
 

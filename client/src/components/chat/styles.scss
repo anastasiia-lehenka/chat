@@ -6,7 +6,7 @@
 .chat {
   display: flex;
   flex-direction: column;
-  max-width: 1000px;
+  max-width: 1050px;
   height: 100%;
   margin: 0 auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -20,6 +20,5 @@
 
 .chat-area {
   display: flex;
-  flex-direction: row;
   height: 100%;
 }

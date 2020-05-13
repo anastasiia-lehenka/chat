@@ -1,7 +1,12 @@
 .user {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+}
+
+.user-list {
+  .user:not(:last-child) {
+    margin-bottom: 10px;
+  }
 }
 
 .user__online-indicator {

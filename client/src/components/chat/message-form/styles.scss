@@ -20,7 +20,7 @@
 
 .send-button {
   flex-basis: 80px;
-  color: #525151;
+  color: $dark-text-color;
 
   span {
     font-size: 20px;
@@ -28,6 +28,6 @@
 
   &:hover {
     cursor: pointer;
-    color: #317ad0;
+    color: $icon-hover-color;
   }
 }

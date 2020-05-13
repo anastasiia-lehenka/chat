@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {Redirect} from 'react-router-dom';
 import Header from '../header';
+import {sendLoginRequest} from '../../api';
 
 export default class Login extends Component {
     constructor(props) {
@@ -15,7 +16,7 @@ export default class Login extends Component {
             incorrectInputMessage: ''
         };
         this.state = this.initialState;
-    }
+    };
 
     onSubmitForm = e => {
         const {
@@ -25,34 +26,16 @@ export default class Login extends Component {
 
         e.preventDefault();
 
-        const regexp = /^[a-zA-Z0-9]{3,}$/;
-
-        if (!username.match(regexp) || !password.match(regexp)) {
+        if (!this.validateCredentials(username, password)) {
             this.setState({
                 incorrectInputMessage: 'Username and password can contain only letters and numbers and must be at least 3 characters long'
             });
             return;
-        }
+        };
 
-        fetch('/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(this.state.user)
-        })
-            .then(response => {
-                if (!response.ok) throw response;
-                return response.json()
-            })
-            .then(response => {
-                localStorage.setItem('token', response.token);
-                this.setState({redirect: '/chat'})
-            })
-            .catch(err => {
-                err.text().then( errorMessage => console.log(errorMessage));
-                this.setState({incorrectInputMessage: 'Invalid password'})
-            });
+        sendLoginRequest(this.state.user)
+            .then(this.handleSuccessfulLogin)
+            .catch(this.handleFailedLogin);
     };
 
     onInputChange = e => {
@@ -63,6 +46,27 @@ export default class Login extends Component {
             },
             incorrectInputMessage: ''
         });
+    };
+
+    validateCredentials = (username, password) => {
+        const regexp = /^[a-zA-Z0-9]{3,}$/;
+
+        return username.match(regexp) && password.match(regexp);
+    };
+
+    handleSuccessfulLogin = data => {
+        localStorage.setItem('token', data.token);
+        this.setState({redirect: '/chat'})
+    };
+
+    handleFailedLogin = error => {
+        let errorMessage;
+        if (error.status === 500) {
+            errorMessage = error.text();
+        } else {
+            errorMessage = 'Invalid password';
+        }
+        this.setState({incorrectInputMessage: errorMessage})
     };
 
     render() {
@@ -87,7 +91,7 @@ export default class Login extends Component {
                                 input type="password" name="password" onChange={this.onInputChange}/>
                             </label>
                         </div>
-                        {incorrectInputMessage &&
+                        { incorrectInputMessage &&
                         <p className="login-form__message">{incorrectInputMessage}</p>
                         }
                         <button className="login-form__button" type="submit">Login</button>

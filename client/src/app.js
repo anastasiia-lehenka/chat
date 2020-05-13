@@ -12,7 +12,7 @@ export default class App extends Component {
                 <Switch>
                     <Route path="/login" component={ Login }/>
                     <Route path="/chat" component={ Chat }/>
-                    <Route render={() => <Redirect to="/login" />} />
+                    <Route render={() => <Redirect to="/chat" />} />
                 </Switch>
             </Router>
         );

@@ -1,4 +1,7 @@
 .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 10px;
   font-size: 20px;
   background-color: $header-color;
@@ -13,4 +16,14 @@
   font-size: 16px;
   background-color: $logo-color;
   border-radius: 50%;
+}
+
+.burger-menu {
+  font-size: 28px;
+  margin-right: 20px;
+  cursor: pointer;
+
+  @media screen and (min-width: 640px) {
+    display: none;
+  }
 }
