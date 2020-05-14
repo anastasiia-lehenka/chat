@@ -28,21 +28,26 @@ export default class MessageForm extends Component {
 
     render() {
         const { messageText } = this.state;
+        const { currentUser } = this.props;
 
         return (
-            <form className="message-form" onSubmit={this.submitForm}>
-                <input
-                    className="message-field"
-                    value={messageText}
-                    type="text"
-                    onChange={ this.onMessageChange }
-                    placeholder="Type your message here..."
-                    maxLength="200"
-                />
-                <button className="send-button" type="submit">
-                    <span className="fa fa-paper-plane"/>
-                </button>
-            </form>
+                currentUser.isMuted ?
+                    <div className="message-form message-form--muted">
+                        <p>You can not write messages to this chat because you have been muted</p>
+                    </div>
+                    : <form className="message-form" onSubmit={this.submitForm}>
+                        <input
+                            className="message-field"
+                            value={messageText}
+                            type="text"
+                            onChange={this.onMessageChange}
+                            placeholder="Type your message here..."
+                            maxLength="200"
+                        />
+                        <button className="send-button" type="submit">
+                            <span className="fa fa-paper-plane"/>
+                        </button>
+                    </form>
         );
     }
 };

@@ -6,30 +6,39 @@ export default function UserList(props) {
         currentUser,
         userList,
         logOut,
-        exitChat
+        deleteAccount,
+        isVisible,
+        toggleBanUser,
+        toggleMuteUser
     } = props;
 
+    const classnames = isVisible ? "users users--toggle-menu" : "users";
+
     return (
-        <div className="users">
+        <div className={classnames}>
             <div className="current-user">
                 <p className="users__text">You</p>
                 <div className="current-user__data">
-                    <User username={ currentUser.username } showStatus={ false }/>
-                    <button className="current-user__action current-user__action--logout" onClick={ logOut }>
+                    <User
+                        user={ currentUser }
+                        currentUser={ currentUser }
+                    />
+                    <button className="user-action user-action--logout" onClick={ logOut }>
                         <span className="fa fa-sign-out"></span>
                     </button>
                 </div>
-                <button className="current-user__action current-user__action--leave" onClick={ exitChat }>Leave chat</button>
+                <button className="user-action user-action--delete" onClick={ deleteAccount }>Delete account</button>
             </div>
             <div className="all-users-section">
                 <p className="users__text users__text--chat-members">Chat members</p>
                 <ul className="user-list">
                     { userList.map(user =>
                         <User
-                            key={ user.username }
-                            username={ user.username }
-                            image={user.image}
-                            showStatus={ user.isOnline }
+                            key={ user._id }
+                            currentUser={ currentUser }
+                            user={ user }
+                            toggleBanUser={ toggleBanUser }
+                            toggleMuteUser={ toggleMuteUser }
                         />
                     )}
                 </ul>

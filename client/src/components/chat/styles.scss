@@ -6,19 +6,33 @@
 .chat {
   display: flex;
   flex-direction: column;
-  max-width: 1050px;
+  max-width: 1100px;
   height: 100%;
   margin: 0 auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 .message-area {
-  flex-grow: 1;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
 }
 
+.message-area--darken::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: black;
+  opacity: 0.5;
+  z-index: 2;
+}
+
 .chat-area {
+  position: relative;
   display: flex;
   height: 100%;
+  overflow: hidden;
 }

@@ -3,8 +3,10 @@
 }
 
 .message {
+    position: relative;
+    min-width: 80px;
     max-width: 70%;
-    padding: 12px;
+    padding: 12px 50px 12px 12px;
     margin-bottom: 5px;
     background-color: #c8f6ed;
     border-radius: 8px;
@@ -35,4 +37,12 @@
     width: 30px;
     height: 30px;
     margin-right: 8px;
+}
+
+.message__date {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    color: $message-text-color;
+    font-size: 12px;
 }

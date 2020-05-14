@@ -18,7 +18,7 @@ const validateMessage = data => {
 
     const schema = {
         author: Joi.string().regex(regexPattern).required(),
-        text: Joi.string().min(1).required(),
+        text: Joi.string().min(1).max(200).required(),
     };
 
     const validationResult = Joi.validate(data, schema);

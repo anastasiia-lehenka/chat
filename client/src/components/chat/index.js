@@ -20,7 +20,8 @@ export default class Chat extends Component {
             users: [],
             typingMessage: '',
             currentUser: {},
-            redirect: null
+            redirect: null,
+            isMenuOpened: false
         };
         this.state = this.initialState;
         this.token = localStorage.getItem(TOKEN_KEY);
@@ -32,7 +33,7 @@ export default class Chat extends Component {
     }
 
     componentWillUnmount() {
-        this.socket.emit('disconnect');
+        this.socket.disconnect();
     }
 
     configureSocket (endpoint, token) {
@@ -58,13 +59,8 @@ export default class Chat extends Component {
             });
         });
 
-        socket.on('newUser', user => {
-            this.setState({
-                users: [...this.state.users, user]
-            });
-        });
-
-        socket.on('disconnect', user => {
+        socket.on('disconnect', () => {
+            localStorage.clear();
             this.setState({redirect: '/login'});
         });
 
@@ -90,13 +86,26 @@ export default class Chat extends Component {
 
     logOut = () => {
         localStorage.clear();
+        this.socket.disconnect();
         this.setState({redirect: '/login'});
     }
 
-    exitChat = () => {
+    deleteAccount = () => {
         localStorage.clear();
-        this.socket.emit('exit');
+        this.socket.emit('delete');
         this.setState({redirect: '/login'});
+    }
+
+    toggleBanUser = id => {
+        this.socket.emit('ban', id);
+    }
+
+    toggleMuteUser = id => {
+        this.socket.emit('mute', id);
+    }
+
+    toggleMenu = () => {
+        this.setState({isMenuOpened: !this.state.isMenuOpened})
     }
 
     render() {
@@ -105,31 +114,37 @@ export default class Chat extends Component {
             users,
             typingMessage,
             currentUser,
-            redirect
+            redirect,
+            isMenuOpened
         } = this.state;
 
         const userList = users.filter(user => user.username !== currentUser.username);
+        const messageAreaClassnames = isMenuOpened ? "message-area message-area--darken" : "message-area";
 
         return (
             redirect ?
                 <Redirect to={redirect}/>
                 : <section className="chat-container">
                     <div className="chat">
-                        <Header/>
+                        <Header toggleMenu={this.toggleMenu}/>
                         <div className="chat-area">
                             <UserList
                                 currentUser={ currentUser }
                                 userList={ userList }
                                 logOut = { this.logOut }
-                                exitChat = { this.exitChat }
+                                exitChat = { this.deleteAccount }
+                                isVisible = { isMenuOpened }
+                                toggleBanUser = { this.toggleBanUser }
+                                toggleMuteUser = { this.toggleMuteUser }
                             />
-                            <div className="message-area">
+                            <div className={messageAreaClassnames}>
                                 <MessageList
                                     messageList={ messages }
                                     currentUser={ currentUser }
                                     typingMessage={ typingMessage }
                                 />
                                 <MessageForm
+                                    currentUser={ currentUser }
                                     sendMessage={ this.sendMessage }
                                     showTypingMessage={ this.showTypingMessage }
                                 />

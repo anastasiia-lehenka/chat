@@ -1,5 +1,12 @@
 .user {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info-section {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -9,9 +16,28 @@
   }
 }
 
-.user__online-indicator {
-  font-size: 12px;
-  color: $message-text-color;
+.user-action--ban {
+  color: $warning-color;
+}
+
+.user-action--mute {
+  color: $logo-color;
+}
+
+.user__data {
+  position: relative;
+}
+
+.user__online-indicator::after {
+  content: '';
+  display: inline-block;
+  background-color: #0a9a67;
+  border-radius: 50%;
+  height: 6px;
+  width: 6px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .user__image {
@@ -19,4 +45,15 @@
   width: 40px;
   height: 40px;
   margin-right: 15px;
+}
+
+.user__admin-label {
+  font-size: 12px;
+  color: $message-text-color;
+  margin-right: 10px;
+}
+
+.user__name {
+  display: inline-block;
+  margin-right: 10px;
 }

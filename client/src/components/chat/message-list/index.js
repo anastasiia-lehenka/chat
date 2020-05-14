@@ -25,16 +25,15 @@ export default class MessageList extends Component {
             messageList,
             currentUser,
             typingMessage
-        } = this.props
+        } = this.props;
 
         return (
             <div className="message-list-container">
                 <div className="message-list">
-                    { messageList.map(item =>
+                    { messageList.map(message =>
                         <Message
-                            key={item._id}
-                            text={item.text}
-                            author={item.author}
+                            key={message._id}
+                            message={message}
                             currentUser={currentUser}
                         />
                     )}

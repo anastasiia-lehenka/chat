@@ -22,6 +22,14 @@ const userSchema = new Schema({
         type: Boolean,
         required: true
     },
+    isMuted: {
+        type: Boolean,
+        required: true
+    },
+    isBanned: {
+        type: Boolean,
+        required: true
+    },
     image: {
         type: String
     }

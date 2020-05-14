@@ -2,6 +2,10 @@
     position: relative;
     background: white;
     height: 100%;
+    @media screen and (min-width: 680px) {
+        display: block;
+        min-width: 400px;
+    }
 }
 
 .message-list {

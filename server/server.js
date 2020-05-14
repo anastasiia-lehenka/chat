@@ -16,8 +16,6 @@ app.use('/api', router);
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => { console.log(`App has been started on port ${PORT}...`) });
 
-io.on('connection', socketManager);
-
 mongoose.connect(DB_CONNECTION_URL,
     {
         useNewUrlParser: true,
@@ -27,4 +25,4 @@ mongoose.connect(DB_CONNECTION_URL,
     error => { if(error) return console.log(error) }
 );
 
-module.exports.io = io;
+socketManager(io);

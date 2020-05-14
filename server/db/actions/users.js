@@ -13,22 +13,53 @@ const addUser = async (username, password, image) => {
         password: hashedPassword,
         //image,
         isAdmin: false,
-        isOnline: true
+        isOnline: true,
+        isMuted: false,
+        isBanned: false
     });
 
     return newUser.save();
 }
 
-const getUserByUsername = async (username) => User.findOne({username});
+const getUserByUsername = username => User.findOne({username});
 
-const changeOnlineStatus = async (id, status) => User.findByIdAndUpdate(id, {isOnline: status}, {new: true});
+const changeOnlineStatus = (id, status) => User.findByIdAndUpdate(id, {isOnline: status});
 
-const removeUser = async (id) => User.findByIdAndDelete(id);
+const removeUser = id => User.findByIdAndDelete(id);
 
-const getUserById = async (id) => User.findById(id);
+const toggleUserBan = async (id) => {
+    const user = await User.findById(id);
+    return User.findByIdAndUpdate(id, {isBanned: !user.isBanned});
+}
 
-const getAllUsers = () => User.find();
+const toggleUserMute = async (id) => {
+    const user = await User.findById(id);
+    return User.findByIdAndUpdate(id, {isMuted: !user.isMuted});
+}
 
+const getUserById = async(id) => {
+    const user = await User.findById(id);
+    return ({
+        _id: user._id,
+        username: user.username,
+        isOnline: user.isOnline,
+        isMuted: user.isMuted,
+        isBanned: user.isBanned,
+        isAdmin: user.isAdmin
+    });
+}
+
+const getAllUsers = async() => {
+    const users = await User.find();
+    return users.map(user => ({
+        _id: user._id,
+        username: user.username,
+        isOnline: user.isOnline,
+        isMuted: user.isMuted,
+        isBanned: user.isBanned,
+        isAdmin: user.isAdmin
+    }));
+}
 
 module.exports = {
     addUser,
@@ -36,5 +67,7 @@ module.exports = {
     getAllUsers,
     removeUser,
     changeOnlineStatus,
-    getUserByUsername
+    getUserByUsername,
+    toggleUserBan,
+    toggleUserMute
 };

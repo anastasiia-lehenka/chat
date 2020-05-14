@@ -23,6 +23,7 @@ router.post('/login', async (req, res) => {
     if (user) {
         const isValidPassword = await comparePasswords(password, user.password);
         if (!isValidPassword) return res.status(400).send('Invalid password');
+        if (user.isBanned) return res.status(400).send('You cannot access the chat because you have been banned');
     } else {
         try {
             user = await addUser(username, password, image);

@@ -31,3 +31,16 @@
     color: $icon-hover-color;
   }
 }
+
+.message-form--muted {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $message-text-color;
+  min-height: 80px;
+  padding: 20px;
+
+  p {
+    margin: auto;
+  }
+}

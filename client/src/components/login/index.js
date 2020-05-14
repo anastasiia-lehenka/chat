@@ -60,13 +60,8 @@ export default class Login extends Component {
     };
 
     handleFailedLogin = error => {
-        let errorMessage;
-        if (error.status === 500) {
-            errorMessage = error.text();
-        } else {
-            errorMessage = 'Invalid password';
-        }
-        this.setState({incorrectInputMessage: errorMessage})
+        const errorMessage = error.text();
+        errorMessage.then(text => this.setState({incorrectInputMessage: text}));
     };
 
     render() {
