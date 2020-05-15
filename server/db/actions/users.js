@@ -50,7 +50,7 @@ const getUserById = async(id) => {
 }
 
 const getAllUsers = async() => {
-    const users = await User.find();
+    const users = await User.find().sort({isOnline: -1});
     return users.map(user => ({
         _id: user._id,
         username: user.username,

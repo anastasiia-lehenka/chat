@@ -1,16 +1,22 @@
 .users {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
   background-color: #ffffff;
   width: 300px;
   flex: 1 2 auto;
   border-right: 1px solid $border-color;
-  //box-shadow: 0 0px 8px 0 rgba(0,0,0,0.2) inset;
   z-index: 1;
-  display: none;
   -moz-user-select: none;
   user-select: none;
+  transform: translateX(100%);
+  transition: all 0.3s;
 
   @media screen and (min-width: 680px) {
-    display: block;
+    position: static;
+    transform: none;
+    transition: none;
     min-width: 250px;
     max-width: 350px;
     -moz-user-select: auto;
@@ -19,22 +25,8 @@
 }
 
 .users--toggle-menu {
-  display: block;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
+  transform: translateX(0);
   z-index: 3;
-  animation: 0.5s alternate slidein;
-}
-
-@keyframes slidein {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: none;
-  }
 }
 
 .current-user,

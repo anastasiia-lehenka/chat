@@ -14,6 +14,6 @@ const addMessage = (author, text) => {
     return newMessage.save();
 }
 
-const getAllMessages = () => Message.find();
+const getAllMessages = () => Message.find().sort({date: 'asc'});
 
 module.exports = { addMessage, getAllMessages };
