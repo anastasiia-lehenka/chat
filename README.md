@@ -1,8 +1,6 @@
 !!! HOW TO RUN THE APP!!!
 
-To run this app you need:
-
-to have Node.js installed.
+To run this app you need to have Node.js installed.
 
 If it's the first time you launch this app follow next steps:
 
