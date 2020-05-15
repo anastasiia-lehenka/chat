@@ -2,7 +2,8 @@
 
 To run this app you need:
 
-to have Node.js installed
+to have Node.js installed.
+
 If it's the first time you launch this app follow next steps:
 
 Run "npm install" in your terminal inside the server folder.
@@ -22,6 +23,3 @@ Password: 111
 
 Login: 123
 Password: 123
-
-
-
