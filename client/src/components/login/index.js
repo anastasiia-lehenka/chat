@@ -60,8 +60,10 @@ export default class Login extends Component {
     };
 
     handleFailedLogin = error => {
-        const errorMessage = error.text();
-        errorMessage.then(text => this.setState({incorrectInputMessage: text}));
+        if (error.status === 400) {
+            const errorMessage = error.text();
+            errorMessage.then(text => this.setState({incorrectInputMessage: text}));
+        }
     };
 
     render() {

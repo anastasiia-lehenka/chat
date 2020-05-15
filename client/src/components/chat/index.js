@@ -28,14 +28,6 @@ export default class Chat extends Component {
         this.socket = this.configureSocket(SOCKET_ENDPOINT, this.token);
     }
 
-    componentDidMount() {
-        this.socket.emit('join');
-    }
-
-    componentWillUnmount() {
-        this.socket.disconnect();
-    }
-
     configureSocket (endpoint, token) {
         const socket = io.connect(`${endpoint}?token=${token}`);
 
@@ -59,11 +51,6 @@ export default class Chat extends Component {
             });
         });
 
-        socket.on('disconnect', () => {
-            localStorage.clear();
-            this.setState({redirect: '/login'});
-        });
-
         socket.on('typingMessage', username => {
             if (!this.state.typingMessage) {
                 this.setState({typingMessage: `${username} is typing a message...`});
@@ -73,11 +60,16 @@ export default class Chat extends Component {
             }
         });
 
+        socket.on('disconnect', () => {
+            localStorage.clear();
+            this.setState({redirect: '/login'});
+        });
+
         return socket;
     }
 
     sendMessage = text => {
-        this.socket.emit('newMessage', text);
+        this.socket.emit('newMessage', text, Date.now());
     };
 
     showTypingMessage = () => {
@@ -85,23 +77,25 @@ export default class Chat extends Component {
     };
 
     logOut = () => {
-        localStorage.clear();
         this.socket.disconnect();
+        localStorage.clear();
         this.setState({redirect: '/login'});
     }
 
     deleteAccount = () => {
+        this.socket.emit('deleteUser');
         localStorage.clear();
-        this.socket.emit('delete');
         this.setState({redirect: '/login'});
     }
 
     toggleBanUser = id => {
-        this.socket.emit('ban', id);
+        const user = this.state.users.find(user => user._id === id);
+        this.socket.emit('ban', user._id, !user.isBanned);
     }
 
     toggleMuteUser = id => {
-        this.socket.emit('mute', id);
+        const user = this.state.users.find(user => user._id === id);
+        this.socket.emit('mute', user._id, !user.isMuted);
     }
 
     toggleMenu = () => {

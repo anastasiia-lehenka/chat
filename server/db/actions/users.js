@@ -27,14 +27,12 @@ const changeOnlineStatus = (id, status) => User.findByIdAndUpdate(id, {isOnline:
 
 const removeUser = id => User.findByIdAndDelete(id);
 
-const toggleUserBan = async (id) => {
-    const user = await User.findById(id);
-    return User.findByIdAndUpdate(id, {isBanned: !user.isBanned});
+const toggleUserBan = (id, value) => {
+    return User.findByIdAndUpdate(id, {isBanned: value});
 }
 
-const toggleUserMute = async (id) => {
-    const user = await User.findById(id);
-    return User.findByIdAndUpdate(id, {isMuted: !user.isMuted});
+const toggleUserMute = (id, value) => {
+    return User.findByIdAndUpdate(id, {isMuted: value}, {new: true});
 }
 
 const getUserById = async(id) => {
