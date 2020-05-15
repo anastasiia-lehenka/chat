@@ -14,16 +14,10 @@ Users' credentials:
 
 Admin:
 
-Login: cat
-
-Password: 123
+Login: cat    Password: 123
 
 Users:
 
-Login: cat2
+Login: cat2   Password: 111
 
-Password: 111
-
-Login: 123
-
-Password: 123
+Login: 123    Password: 123
