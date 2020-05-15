@@ -3,7 +3,7 @@
 To run this app you need:
 
 to have Node.js installed
-If it`s the first time you launch this app follow next steps:
+If it's the first time you launch this app follow next steps:
 
 Run "npm install" in your terminal inside the server folder.
 Run "npm install" in your terminal inside the client folder.
