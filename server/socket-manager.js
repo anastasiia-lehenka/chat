@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const {
     removeUser,
     getUserById,
@@ -7,6 +6,10 @@ const {
     toggleUserBan,
     toggleUserMute
 } = require('./db/actions/users');
+const {
+    decodeToken,
+    getSecondsBetweenDates
+} = require('./helpers');
 const {
     addMessage,
     getAllMessages,
@@ -19,10 +22,11 @@ const socketManager = io => {
 
     io.on('connection', async (socket) => {
         let currentUser;
+
         const token = socket.handshake.query.token;
         let decodedToken;
         try {
-            decodedToken = jwt.verify(token, 'token');
+            decodedToken = await decodeToken(token);
         } catch (err) {
             socket.disconnect();
         }
@@ -51,9 +55,14 @@ const socketManager = io => {
 
         socket.on('newMessage', async (text, date) => {
             if (!currentUser.isMuted) {
-                const lastMessageTime =  getLastMessageFromUser(currentUser._id);
-                const newMessage = await addMessage(currentUser.username, text, date);
-                io.sockets.emit('newMessage', newMessage);
+                const lastMessageFromUser = await getLastMessageFromUser(currentUser.username);
+                const secondsBetween = getSecondsBetweenDates(date, lastMessageFromUser.date);
+                if (secondsBetween > 15) {
+                    const newMessage = await addMessage(currentUser.username, text, date);
+                    io.sockets.emit('newMessage', newMessage);
+                } else {
+                    socket.emit('warningMessage', 'Message was not send. Try again in 15 seconds');
+                }
             }
         });
 
@@ -99,7 +108,7 @@ const socketManager = io => {
         });
 
         socket.on('disconnect', async() => {
-            await changeOnlineStatus(currentUser._id, true);
+            await changeOnlineStatus(currentUser._id, false);
 
             getAllUsers().then(allUsers => {
                 socket.broadcast.emit('users', allUsers);

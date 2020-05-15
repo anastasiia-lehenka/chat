@@ -24,7 +24,9 @@ export default class MessageList extends Component {
         const {
             messageList,
             currentUser,
-            typingMessage
+            typingMessage,
+            warningMessage,
+            userList
         } = this.props;
 
         return (
@@ -35,9 +37,11 @@ export default class MessageList extends Component {
                             key={message._id}
                             message={message}
                             currentUser={currentUser}
+                            userList={ userList }
                         />
                     )}
                     { typingMessage && <p className="typing-message">{ typingMessage }</p>}
+                    { warningMessage && <p className="warning-message">{ warningMessage }</p>}
                     <div ref={this.messagesEndRef} />
                 </div>
             </div>

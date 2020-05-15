@@ -16,6 +16,10 @@ const addMessage = (author, text, date) => {
 
 const getAllMessages = () => Message.find().sort({date: 'asc'});
 
-getLastMessageFromUser = (username) => Message.findOne({autor: username})
+const getLastMessageFromUser = username => Message.findOne({author: username}).sort({date: 'desc'})
 
-module.exports = { addMessage, getAllMessages };
+module.exports = {
+    addMessage,
+    getAllMessages,
+    getLastMessageFromUser
+};

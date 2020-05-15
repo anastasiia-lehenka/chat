@@ -1,12 +1,16 @@
 const User = require('../models/User');
 const { validateUser } = require('../validation');
-const { encryptPassword } = require('../../helpers');
+const {
+    encryptPassword,
+    generateColor
+} = require('../../helpers');
 
 const addUser = async (username, password, image) => {
     const validationError = validateUser({username, password, image});
     if (validationError) throw validationError;
 
     const hashedPassword = await encryptPassword(password);
+    const color = generateColor();
 
     const newUser = new User({
         username,
@@ -15,7 +19,8 @@ const addUser = async (username, password, image) => {
         isAdmin: false,
         isOnline: true,
         isMuted: false,
-        isBanned: false
+        isBanned: false,
+        color
     });
 
     return newUser.save();
@@ -43,7 +48,8 @@ const getUserById = async(id) => {
         isOnline: user.isOnline,
         isMuted: user.isMuted,
         isBanned: user.isBanned,
-        isAdmin: user.isAdmin
+        isAdmin: user.isAdmin,
+        color: user.color
     });
 }
 
@@ -55,7 +61,8 @@ const getAllUsers = async() => {
         isOnline: user.isOnline,
         isMuted: user.isMuted,
         isBanned: user.isBanned,
-        isAdmin: user.isAdmin
+        isAdmin: user.isAdmin,
+        color: user.color
     }));
 }
 

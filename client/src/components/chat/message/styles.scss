@@ -1,3 +1,12 @@
+$colors: ("pink": #851d6e, "blue": #2c5aa3, "purple": #541d85, "red": #851d27);
+
+@each $name, $value in $colors {
+    .message__username--#{$name}{
+        color: $value
+    }
+}
+
+
 .message-container {
     display: flex;
 }

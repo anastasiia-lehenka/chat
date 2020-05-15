@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const moment = require('moment');
 const { TOKEN } = require('./constants');
 
 const signNewToken = data => {
@@ -7,7 +8,7 @@ const signNewToken = data => {
 };
 
 const decodeToken = token => {
-    return jwt.verify(token, 'token');
+    return jwt.verify(token, TOKEN);
 };
 
 const encryptPassword = async(password) => {
@@ -19,9 +20,20 @@ const comparePasswords = (password1, password2) => {
     return bcrypt.compare(password1, password2);
 };
 
+const getSecondsBetweenDates = (now, then) => {
+    return moment(now).diff(moment(then), 'seconds');
+}
+
+const generateColor = () => {
+    const colors = ['blue', 'pink', 'purple', 'red'];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
 module.exports = {
     signNewToken,
     decodeToken,
     encryptPassword,
-    comparePasswords
+    comparePasswords,
+    getSecondsBetweenDates,
+    generateColor
 };

@@ -19,13 +19,26 @@ export default class Chat extends Component {
             messages: [],
             users: [],
             typingMessage: '',
+            systemMessage: '',
             currentUser: {},
             redirect: null,
             isMenuOpened: false
         };
         this.state = this.initialState;
+    }
+
+    componentDidMount() {
         this.token = localStorage.getItem(TOKEN_KEY);
-        this.socket = this.configureSocket(SOCKET_ENDPOINT, this.token);
+        if (this.token) {
+            this.socket = this.configureSocket(SOCKET_ENDPOINT, this.token);
+        } else {
+            this.setState({redirect: '/login'});
+        }
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.typingTimeout);
+        clearTimeout(this.warningTimeout);
     }
 
     configureSocket (endpoint, token) {
@@ -45,10 +58,18 @@ export default class Chat extends Component {
 
         socket.on('newMessage', message => {
             clearTimeout(this.typingTimeout);
+            clearTimeout(this.warningTimeout);
             this.setState({
                 typingMessage: '',
                 messages: [...this.state.messages, message]
             });
+        });
+
+        socket.on('warningMessage', message => {
+            this.setState({warningMessage: message,});
+            this.warningTimeout = setTimeout(() => {
+                this.setState({warningMessage: ''});
+            }, 2000);
         });
 
         socket.on('typingMessage', username => {
@@ -107,6 +128,7 @@ export default class Chat extends Component {
             messages,
             users,
             typingMessage,
+            warningMessage,
             currentUser,
             redirect,
             isMenuOpened
@@ -126,7 +148,7 @@ export default class Chat extends Component {
                                 currentUser={ currentUser }
                                 userList={ userList }
                                 logOut = { this.logOut }
-                                exitChat = { this.deleteAccount }
+                                deleteAccount = { this.deleteAccount }
                                 isVisible = { isMenuOpened }
                                 toggleBanUser = { this.toggleBanUser }
                                 toggleMuteUser = { this.toggleMuteUser }
@@ -136,6 +158,8 @@ export default class Chat extends Component {
                                     messageList={ messages }
                                     currentUser={ currentUser }
                                     typingMessage={ typingMessage }
+                                    warningMessage={ warningMessage }
+                                    userList={ userList }
                                 />
                                 <MessageForm
                                     currentUser={ currentUser }

@@ -1,4 +1,6 @@
 .users {
+  display: flex;
+  flex-direction: column;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -32,6 +34,20 @@
 .current-user,
 .all-users-section {
   padding: 20px;
+}
+
+
+.gridcontainer {
+  flex-grow: 1;
+  position: relative;
+}
+
+.all-users-section {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
 }
 
 .current-user {
@@ -81,8 +97,4 @@
   &:hover {
     color: $icon-hover-color;
   }
-}
-
-.user-list {
-  overflow: auto;
 }

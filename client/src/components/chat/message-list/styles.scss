@@ -2,7 +2,6 @@
     position: relative;
     height: 100%;
     @media screen and (min-width: 680px) {
-        display: block;
         min-width: 400px;
     }
 }
@@ -32,4 +31,9 @@
 
 .typing-message {
     color: $message-text-color;
+}
+
+.warning-message {
+    text-align: center;
+    color: $warning-color;
 }

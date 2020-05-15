@@ -29,19 +29,21 @@ export default function UserList(props) {
                 </div>
                 <button className="user-action user-action--delete" onClick={ deleteAccount }>Delete account</button>
             </div>
-            <div className="all-users-section">
-                <p className="users__text users__text--chat-members">Chat members</p>
-                <ul className="user-list">
-                    { userList.map(user =>
-                        <User
-                            key={ user._id }
-                            currentUser={ currentUser }
-                            user={ user }
-                            toggleBanUser={ toggleBanUser }
-                            toggleMuteUser={ toggleMuteUser }
-                        />
-                    )}
-                </ul>
+            <div className="gridcontainer">
+                <div className="all-users-section">
+                    <p className="users__text users__text--chat-members">Chat members</p>
+                    <ul className="user-list">
+                        { userList.map(user =>
+                            <User
+                                key={ user._id }
+                                currentUser={ currentUser }
+                                user={ user }
+                                toggleBanUser={ toggleBanUser }
+                                toggleMuteUser={ toggleMuteUser }
+                            />
+                        )}
+                    </ul>
+                </div>
             </div>
         </div>
     );
