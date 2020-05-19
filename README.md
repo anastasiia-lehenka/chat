@@ -9,6 +9,8 @@ Database - Mongoose for MongoDB.
 Authorization using JWT.
 
 
+
+
 !!! HOW TO RUN THE APP!!!
 
 To run this app you need to have Node.js installed.
