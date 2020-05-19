@@ -7,9 +7,8 @@ Back-End - Node.js, Express.
 Database - Mongoose for MongoDB.
 
 Authorization using JWT.
-
-
-
+  
+_______________________________________
 
 !!! HOW TO RUN THE APP!!!
 
@@ -22,6 +21,7 @@ If it's the first time you launch this app follow next steps:
 2. Run "npm install" in your terminal inside the client folder.
 
 3. Then run "npm run dev" in your terminal inside the server folder of the project and open http://localhost:3000/ in your browser.
+________________________________________
 
 Users' credentials:
 
