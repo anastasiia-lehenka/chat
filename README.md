@@ -1,3 +1,9 @@
+Chat on Web Sockets (socket.io).
+Front-End - React, React Router, SCSS.
+Back-End - Node.js, Express. 
+Database - Mongoose для работы с MongoDB.
+Authorization using JWT.
+
 !!! HOW TO RUN THE APP!!!
 
 To run this app you need to have Node.js installed.
