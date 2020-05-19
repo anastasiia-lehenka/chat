@@ -4,7 +4,7 @@ Front-End - React, React Router, SCSS.
 
 Back-End - Node.js, Express.
 
-Database - Mongoose для работы с MongoDB.
+Database - Mongoose for MongoDB.
 
 Authorization using JWT.
 
